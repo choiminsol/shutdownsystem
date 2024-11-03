@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Display on Click</title>
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Audiowide', sans-serif;
+            margin: 0;
+            background-color: black;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            transition: height 0.5s;
+        }
+        #timeDisplay {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 4em;
+            color: white;
+            opacity: 1;
+            transition: opacity 1s ease;
+            display: flex;
+            gap: 0.2em;
+            z-index: 100;
+        }
+        .time-part {
+            width: 2ch;
+            text-align: center;
+        }
+        .box {
+            position: absolute;
+            background-color: rgba(255, 0, 0, 0.7);
+            transition: transform 0.2s ease, opacity 0.2s ease;
+            opacity: 0;
+            transform: scale(0);
+            animation: grow 0.3s forwards;
+            background-size: cover;
+            background-position: center;
+        }
+        @keyframes grow {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            opacity: 0;
+            transition: opacity 1s ease;
+            z-index: 50;
+        }
+        #image {
+            position: fixed;
+            top: 30%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.3);
+            transition: transform 0.5s ease;
+            z-index: 100;
+            display: none;
+        }
+        #image.show {
+            display: block;
+            transform: translate(-50%, -50%) scale(0.3);
+        }
+        #newTimeDisplay {
+            position: fixed;
+            top: 35%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1.5);
+            font-size: 6em;
+            color: rgb(255, 255, 255);
+            opacity: 1;
+            transition: opacity 1s ease;
+            display: none;
+            z-index: 110;
+        }
+        .secondImage {
+            position: fixed;
+            top: 60%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.238);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: 90;
+            display: none;
+        }
+        .secondImage.show {
+            opacity: 1;
+            display: block;
+        }
+        #title {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-weight: 600;
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 40px;
+            color: rgb(255, 0, 0);
+            opacity: 0; /* 초기에는 보이지 않음 */
+            transition: opacity 1s ease;
+            display: none; /* 초기에는 숨김 */
+            z-index: 120;
+        }
+        #bodyText {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-weight: 400;
+            color: rgb(255, 255, 255);
+            position: fixed;
+            top: 80%; /* 상단 80% 위치 설정 */
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 120; /* 다른 요소보다 위에 배치 */
+            opacity: 0; /* 초기 투명도 설정 (0으로 설정하여 보이지 않음) */
+            transition: opacity 0.5s ease;
+            text-align: center; /* 본문 정렬 설정 */
+            max-width: 600px; /* 본문 최대 폭 설정 */
+    
+        }
+        </style>
+</head>
+<body>
+    <div id="timeDisplay">
+        <div id="hours" class="time-part">00</div>
+        <div>:</div>
+        <div id="minutes" class="time-part">00</div>
+        <div>:</div>
+        <div id="seconds" class="time-part">00</div>
+    </div>
+    <div id="overlay"></div>
+    <img id="image" src="imgs/1.png" alt="Image" />
+    <div id="newTimeDisplay">
+        <div id="newHours" class="time-part">12</div>
+        <div>:</div>
+        <div id="newMinutes" class="time-part">00</div>
+        <div>:</div>
+        <div id="newSeconds" class="time-part">00</div>
+    </div>
+    <img id="firstImage" class="secondImage" src="imgs/2.png" alt="First Image" style="transform: translate(-50%, -50%) scale(0.240) rotate(28deg);" />
+    <img id="secondImage" class="secondImage" src="imgs/2.png" alt="Second Image" style="transform: translate(-50%, -50%) scale(0.240) rotate(8deg);" />
+    <img id="thirdImage" class="secondImage" src="imgs/2.png" alt="Third Image" style="transform: translate(-50%, -50%) scale(0.240) rotate(-20deg);" />
+    <div id="title">2024 청소년 SNS 셧다운 제도</div>ㄴ
+    <div id="bodyText">
+        최근 청소년 SNS 셧다운 제도가 논의되고 있었다는 걸 알고 계셨나요? 그 이유에는 청소년들의 SNS 과몰입과 중독 문제를 해결하기 위함입니다.<br><br>
+        청소년들이 SNS에서 발생하는 그루밍 성폭력, 마약거래, 사이버 도박 등 다양한 범죄에 노출되는 문제가 커지고 있으며, 스마트폰 과의존 조사에서도 40% 이상의 청소년이 위험군에 해당되었습니다.<br><br>
+        이 제도는 주로 16세 미만 청소년의 일일 SNS 이용 시간을 제한하고 중독성 콘텐츠를 친권자 확인 아래에 두는 법안을 포함합니다.<br><br>
+        지금 이 순간에도 생기고 있는 유해 콘텐츠들, 청소년들이 아무렇지 않게 접할 수 있는 시간 과연 이대로 SNS 사용을 방관해도 될까요?
+    </div>
+
+    <script>
+        const timeDisplay = document.getElementById('timeDisplay');
+        const hoursDisplay = document.getElementById('hours');
+        const minutesDisplay = document.getElementById('minutes');
+        const secondsDisplay = document.getElementById('seconds');
+        const overlay = document.getElementById('overlay');
+        const image = document.getElementById('image');
+        const newTimeDisplay = document.getElementById('newTimeDisplay');
+        const firstImage = document.getElementById('firstImage');
+        const secondImage = document.getElementById('secondImage');
+        const thirdImage = document.getElementById('thirdImage');
+        const title = document.getElementById('title'); // 제목 요소
+        let clickCount = 0;
+        const maxClicks = 7;
+
+        const totalTime = 12 * 60 * 60;
+        const duration = 5 * 1000;
+        const startTime = Date.now();
+        let currentTime = 0;
+
+        function updateDisplay() {
+            const elapsedTime = (Date.now() - startTime) / duration * totalTime;
+            currentTime = Math.min(elapsedTime, totalTime);
+
+            let hours = Math.floor(currentTime / 3600).toString().padStart(2, '0');
+            let minutes = Math.floor((currentTime % 3600) / 60).toString().padStart(2, '0');
+            let seconds = Math.floor(currentTime % 60).toString().padStart(2, '0');
+
+            hoursDisplay.textContent = hours;
+            minutesDisplay.textContent = minutes;
+            secondsDisplay.textContent = seconds;
+
+            timeDisplay.style.opacity = 1 - (currentTime / totalTime);
+
+            if (currentTime >= totalTime) {
+                timeDisplay.style.opacity = 0;
+            } else {
+                requestAnimationFrame(updateDisplay);
+            }
+        }
+
+        function createBox() {
+            if (clickCount >= maxClicks) return;
+
+            clickCount += 1;
+            let boxesToCreate;
+
+            if (clickCount === 1) boxesToCreate = 5;
+            else if (clickCount === 2) boxesToCreate = 10;
+            else if (clickCount === 3) boxesToCreate = 15;
+            else if (clickCount === 4) boxesToCreate = 20;
+            else if (clickCount === 5) boxesToCreate = 25;
+            else if (clickCount === 6) boxesToCreate = 30;
+            else if (clickCount === 7) boxesToCreate = 35;
+
+            for (let i = 0; i < boxesToCreate; i++) {
+                const box = document.createElement('div');
+                box.className = 'box';
+
+                const randomImageIndex = Math.floor(Math.random() * 30) + 10;
+                box.style.backgroundImage = `url('imgs/${randomImageIndex}.png')`;
+
+                if ([28, 31, 18, 33, 21].includes(randomImageIndex)) {
+                    box.style.width = '300px';
+                    box.style.height = '150px';
+                    box.style.backgroundSize = 'contain';
+                } else {
+                    box.style.width = '150px';
+                    box.style.height = '150px';
+                    box.style.backgroundSize = 'cover';
+                }
+
+                box.style.top = `${Math.random() * (window.innerHeight - parseInt(box.style.height))}px`;
+                box.style.left = `${Math.random() * (window.innerWidth - parseInt(box.style.width))}px`;
+
+                document.body.appendChild(box);
+            }
+
+            if (clickCount === maxClicks) {
+                setTimeout(() => {
+                    overlay.style.opacity = 1;
+                }, 2000);
+            }
+        }
+
+        function showImage() {
+            image.classList.add('show');
+        }
+
+        function showNewTimeDisplay() {
+            newTimeDisplay.style.display = 'flex';
+            setTimeout(() => {
+                firstImage.style.display = 'block';
+                firstImage.classList.add('show');
+            }, 1000);
+            setTimeout(() => {
+                secondImage.style.display = 'block';
+                secondImage.classList.add('show');
+            }, 1500);
+            setTimeout(() => {
+                thirdImage.style.display = 'block';
+                thirdImage.classList.add('show');
+                document.body.style.height = '4000px';
+                document.body.style.overflowY = 'auto';
+
+                // 모든 2.png 이미지가 나타난 후 암전과 제목 표시
+                setTimeout(() => {
+                    overlay.style.opacity = 1; // 암전
+                    title.style.display = 'block'; // 제목 표시
+                    title.style.opacity = 1; // 제목의 투명도 증가
+                }, 2000);
+            }, 2000);
+        }
+
+        document.addEventListener('click', (event) => {
+            if (overlay.style.opacity == 1) {
+                if (image.classList.contains('show')) {
+                    showNewTimeDisplay();
+                } else {
+                    showImage();
+                }
+            } else {
+                createBox();
+            }
+        });
+
+        updateDisplay();
+            function showNewTimeDisplay() {
+        newTimeDisplay.style.display = 'flex';
+        setTimeout(() => {
+            firstImage.style.display = 'block';
+            firstImage.classList.add('show');
+        }, 1000);
+        setTimeout(() => {
+            secondImage.style.display = 'block';
+            secondImage.classList.add('show');
+        }, 1500);
+        setTimeout(() => {
+            thirdImage.style.display = 'block';
+            thirdImage.classList.add('show');
+            document.body.style.height = '4000px';
+            document.body.style.overflowY = 'auto';
+
+            // 모든 2.png 이미지가 나타난 후 암전과 제목 표시
+            setTimeout(() => {
+                overlay.style.opacity = 1; // 암전
+                title.style.display = 'block'; // 제목 표시
+                title.style.opacity = 1; // 제목의 투명도 증가
+
+                // 제목 표시 후 0.5초 후에 본문 보이기
+                setTimeout(() => {
+                    bodyText.style.opacity = 1; // 본문 보이기
+                }, 500); // 0.5초 대기
+            }, 2000);
+        }, 2000);
+    }   
+
+    </script>
+</body>
+</html>

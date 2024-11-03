@@ -1,0 +1,36 @@
+#timeDisplay {
+    position: sticky; /* sticky 위치 지정 */
+    top: 0; /* 상단에 고정 */
+    left: 50%;
+    transform: translate(-50%, 0); /* 수평 중앙 정렬 */
+    font-size: 4em;
+    color: white;
+    opacity: 1;
+    transition: opacity 1s ease;
+    display: flex;
+    gap: 0.2em;
+    z-index: 100;
+}
+
+#image {
+    position: sticky; /* sticky 위치 지정 */
+    top: 40%; /* 원하는 위치 조정 */
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.3);
+    transition: transform 0.5s ease;
+    z-index: 100;
+    display: none;
+}
+
+#newTimeDisplay {
+    position: sticky; /* sticky 위치 지정 */
+    top: 40%; /* 원하는 위치 조정 */
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1.5);
+    font-size: 6em;
+    color: white;
+    opacity: 1;
+    transition: opacity 1s ease;
+    display: none;
+    z-index: 110;
+}
